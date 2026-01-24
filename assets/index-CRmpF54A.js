@@ -52,24 +52,24 @@
                     <div class="date-weekday">${X} ${$}</div>
                 </div>
             </div>
-        `};M(),setInterval(M,6e4)}document.querySelector("#app").innerHTML=`
+        `};M(),setInterval(M,6e4)}"serviceWorker"in navigator&&navigator.serviceWorker.register("/lunar-calendar/sw.js",{scope:"/lunar-calendar/"}).catch(()=>{});document.querySelector("#app").innerHTML=`
   <button id="theme-toggle" class="theme-toggle" title="Toggle Theme">
     <span class="theme-icon">🌙</span>
   </button>
-  
+
   <div id="info-row">
     <div id="clock-panel" class="glass-card info-card">
       <div id="clock-container"></div>
     </div>
-    
+
     <div id="quote-panel" class="glass-card info-card">
       <div id="quote-container"></div>
     </div>
-    
+
     <div id="solar-panel" class="glass-card info-card">
       <div id="solar-container"></div>
     </div>
-    
+
     <div id="lunar-panel" class="glass-card info-card">
       <div id="lunar-container"></div>
     </div>
