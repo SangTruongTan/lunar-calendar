@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/lunar-calendar/dev-sw.js?dev-sw', { scope: '/lunar-calendar/', type: 'classic' })
