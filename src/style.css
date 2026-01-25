@@ -507,6 +507,65 @@ body[data-theme="light"] .time-unit {
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+
+/* Ticker Animation for Clock */
+.ticker-wrapper {
+  overflow: hidden;
+  display: inline-flex;  /* Keeps it behaving like a text/inline-block element */
+  flex-direction: column;
+  height: 1.2em;         /* Set a fixed height relative to font size (adjustable) */
+  vertical-align: middle;
+  position: relative;
+  /* Ensure it matches the surrounding font properties */
+}
+
+/* Specific override for clock application to match previous time-unit height */
+/* Specific override for clock application to match previous time-unit height */
+.digit-group {
+  display: flex;
+  gap: 2px;
+}
+
+.clock-visual .ticker-wrapper {
+  height: 3rem; 
+  min-width: 0.8em; /* Reduced for single digits */
+  width: 32px; /* Fixed width for alignment */
+}
+
+.ticker-track {
+  display: flex;
+  flex-direction: column;
+  /* Default state: no transform */
+  transform: translateY(0);
+}
+
+.ticker-track.animating {
+  transition: transform var(--ticker-duration, 400ms) cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Ensure gradients work on smaller text */
+.ticker-value {
+    /* ... existing styles ... do not duplicate common properties if inherited, but for safety in this tool: */
+  height: 3rem; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  
+  background: linear-gradient(135deg, var(--text-accent), #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 10px rgba(244, 114, 182, 0.3));
+}
+
+body[data-theme="light"] .ticker-value {
+  background: linear-gradient(135deg, #db2777, #7c3aed);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 10px rgba(219, 39, 119, 0.2));
 }
