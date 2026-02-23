@@ -1,4 +1,5 @@
 import { AnimatedClockNumber } from "./AnimatedNumber.js";
+import { checkDateChange } from "./dateChange.js";
 
 export function initClock(element) {
   // Render the static structure once
@@ -78,43 +79,35 @@ export function initClock(element) {
     anims.m2.update(now.m2, { animate });
     anims.s1.update(now.s1, { animate });
     anims.s2.update(now.s2, { animate });
+
+    // Check if the calendar date has rolled over (midnight crossing).
+    // This fires listeners registered via onDateChange() in other modules.
+    checkDateChange();
   };
 
   // --- Scheduler Logic ---
 
-  // 1. Safe Interval for ticking
-  // We use standard setInterval but we always derive state from Date() inside tick()
-  // which solves the drift.
-  const timer = setInterval(() => tick(true), 1000);
-
-  // 2. Visibility Handler for fast-forward prevention
+  // Visibility Handler — prevents fast-forward after tab switch
+  // AND ensures date-dependent widgets catch up immediately.
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      // Optional: Pause interval to save resources, but purely deriving from Date is enough safety.
-      // However, stopping it prevents a queue of callbacks if the browser throttles weirdly.
-      // But standard throttle just slows down the callback rate.
-      // We will let it run, but when we come back, we FORCE a sync.
-    } else {
-      // User returned to tab.
-      // 1. Immediately force screen to show correct time WITHOUT animation
-      //    (This prevents the "fast forward" effect of catching up animations)
+    if (!document.hidden) {
+      // 1. Snap the clock to the correct time without animation
       tick(false);
-
-      // 2. We don't need to restart interval if we didn't clear it.
-      //    The next interval tick will just proceed normally from this new state.
+      // 2. checkDateChange() was already called inside tick(),
+      //    so date widgets will re-render if the date changed.
     }
   });
 
-  // Initial alignment (Wait for the next second boundary to start the interval)
+  // Initial alignment: wait for the next second boundary then start a clean 1 s interval.
   const now = new Date();
   const delay = 1000 - now.getMilliseconds();
 
+  // Start an initial timer so we don't miss the first tick
+  let intervalId = setInterval(() => tick(true), 1000);
+
   setTimeout(() => {
-    tick(true); // First real tick
-    // Note: The timer variable above was defined early but only starts here?
-    // Actually the logic above started it immediately. Let's fix the startup.
-    // We should clear the initial timer and start a synchronized one.
-    clearInterval(timer);
-    setInterval(() => tick(true), 1000);
+    tick(true); // First aligned tick
+    clearInterval(intervalId);
+    intervalId = setInterval(() => tick(true), 1000);
   }, delay);
 }

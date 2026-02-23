@@ -1,12 +1,14 @@
-export function initSolarDate(element) {
-    const render = () => {
-        const now = new Date();
-        const weekday = now.toLocaleDateString('en-US', { weekday: 'long' });
-        const month = now.toLocaleDateString('en-US', { month: 'short' });
-        const day = now.getDate();
-        const year = now.getFullYear();
+import { onDateChange } from "./dateChange.js";
 
-        element.innerHTML = `
+export function initSolarDate(element) {
+  const render = () => {
+    const now = new Date();
+    const weekday = now.toLocaleDateString("en-US", { weekday: "long" });
+    const month = now.toLocaleDateString("en-US", { month: "short" });
+    const day = now.getDate();
+    const year = now.getFullYear();
+
+    element.innerHTML = `
       <div class="info-label">☀️ Solar Date</div>
       <div class="info-value date-visual">
         <div class="date-day-number">${day}</div>
@@ -16,8 +18,10 @@ export function initSolarDate(element) {
         </div>
       </div>
     `;
-    };
+  };
 
-    render();
-    setInterval(render, 60000); // Update every minute
+  render();
+
+  // Re-render whenever the calendar date changes (midnight, visibility restore, etc.)
+  onDateChange(render);
 }
