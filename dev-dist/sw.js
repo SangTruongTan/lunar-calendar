@@ -82,7 +82,7 @@ define(['./workbox-5a5d9309'], (function (workbox) { 'use strict';
     "revision": "bd6ded09fac60b550db77f640f165a8a"
   }, {
     "url": "/lunar-calendar/index.html",
-    "revision": "0.j7hs9qtdqpo"
+    "revision": "0.u1g3n3vfmvc"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("/lunar-calendar/index.html"), {

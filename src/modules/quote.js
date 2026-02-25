@@ -1,5 +1,3 @@
-import { onDateChange } from "./dateChange.js";
-
 const quotes = [
   {
     text: "The journey of a thousand miles begins with one step.",
@@ -424,6 +422,11 @@ const quotes = [
   },
 ];
 
+/**
+ * Initializes the quote widget.
+ * @param {HTMLElement} element
+ * @returns {() => void} A refresh function to re-render the quote (e.g. on date change).
+ */
 export function initQuote(element) {
   const render = () => {
     // Pick a quote based on the day of the year so it stays consistent for the day
@@ -447,6 +450,6 @@ export function initQuote(element) {
 
   render();
 
-  // Re-render when the date changes so the quote updates at midnight
-  onDateChange(render);
+  // Return the render function so main.js can call it on date change
+  return render;
 }

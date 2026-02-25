@@ -1,6 +1,10 @@
 import { Solar } from "lunar-javascript";
-import { onDateChange } from "./dateChange.js";
 
+/**
+ * Initializes the lunar date widget.
+ * @param {HTMLElement} element
+ * @returns {() => void} A refresh function to re-render (e.g. on date change).
+ */
 export function initLunarDate(element) {
   // Map zodiac animals to emojis
   const zodiacEmojis = {
@@ -46,6 +50,6 @@ export function initLunarDate(element) {
 
   render();
 
-  // Re-render whenever the calendar date changes (midnight, visibility restore, etc.)
-  onDateChange(render);
+  // Return the render function so main.js can call it on date change
+  return render;
 }

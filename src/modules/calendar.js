@@ -1,5 +1,4 @@
 import { Solar } from "lunar-javascript";
-import { onDateChange } from "./dateChange.js";
 
 // Vietnamese Holidays (Solar calendar)
 const solarHolidays = {
@@ -39,6 +38,11 @@ const lunarHolidays = {
   "30-12": "Giao Thừa",
 };
 
+/**
+ * Initializes the calendar widget.
+ * @param {HTMLElement} element
+ * @returns {() => void} A refresh function to re-render the calendar (e.g. on date change).
+ */
 export function initCalendar(element) {
   let currentDate = new Date();
   // Track whether the user has manually navigated away from "today's" month.
@@ -173,14 +177,11 @@ export function initCalendar(element) {
 
   render();
 
-  // When the date changes (midnight), re-render the calendar so the
-  // "today" highlight moves to the new day. If the user is still
-  // viewing the current month, also advance currentDate so the
-  // calendar navigates forward if the month rolled over.
-  onDateChange(() => {
+  // Return a refresh function for external callers (e.g. date-change handler in main.js)
+  return () => {
     if (isViewingCurrentMonth) {
       currentDate = new Date();
     }
     render();
-  });
+  };
 }

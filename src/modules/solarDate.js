@@ -1,5 +1,8 @@
-import { onDateChange } from "./dateChange.js";
-
+/**
+ * Initializes the solar date widget.
+ * @param {HTMLElement} element
+ * @returns {() => void} A refresh function to re-render (e.g. on date change).
+ */
 export function initSolarDate(element) {
   const render = () => {
     const now = new Date();
@@ -22,6 +25,6 @@ export function initSolarDate(element) {
 
   render();
 
-  // Re-render whenever the calendar date changes (midnight, visibility restore, etc.)
-  onDateChange(render);
+  // Return the render function so main.js can call it on date change
+  return render;
 }
